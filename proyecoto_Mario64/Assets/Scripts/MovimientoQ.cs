@@ -8,7 +8,7 @@ public class MovimientoQ : MonoBehaviour
     public float rotationSpeed = 100f;
     private Rigidbody rb;
 
-    // public Animator anima;
+    public Animator anima;
 
     void Start()
     {
@@ -29,7 +29,7 @@ public class MovimientoQ : MonoBehaviour
 
         rb.MovePosition(rb.position + movement * Time.fixedDeltaTime);
         rb.MoveRotation(rb.rotation * rotation);
-        /*
+        
         if (verticalInput > 0 || verticalInput < 0)
         {
             anima.SetFloat("Walk", Mathf.Abs(verticalInput));
@@ -38,7 +38,7 @@ public class MovimientoQ : MonoBehaviour
         {
             anima.SetFloat("Walk", 0);
         }
-        */
+        
 
 
     }
