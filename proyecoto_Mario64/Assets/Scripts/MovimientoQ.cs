@@ -32,11 +32,13 @@ public class MovimientoQ : MonoBehaviour
         
         if (verticalInput > 0 || verticalInput < 0)
         {
-            anima.SetFloat("Walk", Mathf.Abs(verticalInput));
+            anima.SetFloat("run", Mathf.Abs(verticalInput));
+            Debug.Log("Corriendo");
         }
         else
         {
-            anima.SetFloat("Walk", 0);
+            anima.SetFloat("run", 0);
+            Debug.Log("Quieto");
         }
         
 
