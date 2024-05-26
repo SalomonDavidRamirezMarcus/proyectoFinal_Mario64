@@ -911,6 +911,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c317740a4b4c174c81b9f721a1d5f22, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1855494406}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c317740a4b4c174c81b9f721a1d5f22, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1855494409}
   m_SourcePrefab: {fileID: 100100000, guid: 1c317740a4b4c174c81b9f721a1d5f22, type: 3}
 --- !u!1 &1280267591
 GameObject:
@@ -1286,8 +1289,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ac8bf90d6885804b8693fa268dccb3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  rotationSpeed: 100
+  moveSpeed: 50
+  rotationSpeed: 200
   anima: {fileID: 1855494404}
 --- !u!54 &1855494407
 Rigidbody:
@@ -1336,9 +1339,25 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.2299447
-  m_Height: 4.4110394
+  m_Height: 3.980769
   m_Direction: 1
-  m_Center: {x: 0, y: 1.7055197, z: 0}
+  m_Center: {x: 0, y: 1.9206548, z: 0}
+--- !u!114 &1855494409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855494403}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6acb8d1a8cbaed34c92135823896cc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 100
+  rotationSpeed: 200
+  x: 0
+  y: 0
 --- !u!1 &1975490986
 GameObject:
   m_ObjectHideFlags: 3

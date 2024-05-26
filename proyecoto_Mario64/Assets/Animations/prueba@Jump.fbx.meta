@@ -1,36 +1,11 @@
 fileFormatVersion: 2
-guid: ad44aa08df1a7624e8b98f7368e1b859
+guid: cf29c1582cfeb0f40b5dfbf0df4f84a9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Mario64Body_alb
-    second: {fileID: 2800000, guid: 75a1ade32b829244684331416da3886d, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Mario64Cap_alb
-    second: {fileID: 2800000, guid: 1672d8cddfb73a840a7082da9dbc5963, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Mario64Eye_alb.0
-    second: {fileID: 2800000, guid: ed56a1c7cdcfae740b13e9b9199efaf3, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Mario64Face_alb
-    second: {fileID: 2800000, guid: 671b8bdc9da3a134098ad6559150f7c6, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Mario64Hand_alb
-    second: {fileID: 2800000, guid: b20900b527fc66240a7d881c61058dfe, type: 3}
+  externalObjects: {}
   materials:
-    materialImportMode: 1
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -42,16 +17,9 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: "Avatar Rig Configuration mis-match. Inbetween bone rotation
-      in configuration does not match rotation in animation file:\n\t'ShoulderL'
-      : rotation error = 9.353700 deg\n\t'ShoulderR' : rotation error = 6.471834
-      deg\n"
+    rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Armature|Armature|Armature|Armature|mixamo.com|Layer0'
-      has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'ShoulderL'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'ShoulderR'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -109,9 +77,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - cf29c1582cfeb0f40b5dfbf0df4f84a9
-  - bcc7ba9bce0f1624c894b95ad00c48da
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -495,11 +461,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: ad44aa08df1a7624e8b98f7368e1b859, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
