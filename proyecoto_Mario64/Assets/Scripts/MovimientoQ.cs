@@ -68,17 +68,17 @@ public class MovimientoQ : MonoBehaviour
 
         if (jumpCount == 0)
         {
-            anima.SetTrigger("firstJump");
+            //anima.SetTrigger("firstJump");
         }
         else if (jumpCount == 1)
         {
             jumpForce *= secondJumpMultiplier;
-            anima.SetTrigger("secondJump");
+            //anima.SetTrigger("secondJump");
         }
         else if (jumpCount == 2)
         {
             jumpForce *= thirdJumpMultiplier;
-            anima.SetTrigger("thirdJump");
+            //anima.SetTrigger("thirdJump");
         }
 
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset vertical velocity
