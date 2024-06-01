@@ -1,65 +1,61 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Runtime.ConstrainedExecution;
+using Unity.AI.Navigation.Editor;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UIElements;
 
-public class enemigoMovement : MonoBehaviour
+public class enemigoMovimiento : MonoBehaviour
 {
-    public int rutina;
-    public float cronometro;
-    //public Animator ani;
-    public Quaternion angulo;
-    public float grado;
-    public Rigidbody rb;
+
+
+
+
+    public Transform Player;
+    private NavMeshAgent agent;
+    public Animator ani;
 
     public GameObject target;
 
+    public float wanderRadius = 10f;
     // Start is called before the first frame update
     void Start()
     {
-        //ani = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
         target = GameObject.Find("Player");
+        agent = GetComponent<NavMeshAgent>();
+        ani = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        comportamiento();
-    }
-    public void comportamiento()
-    {
-
-        cronometro += 1 * Time.deltaTime;
-        if (cronometro >= 4)
+        if (Vector3.Distance(transform.position, target.transform.position) > 2.5)
         {
-            rutina = Random.Range(0, 2);
-            cronometro = 0;
-            switch (rutina)
-            {
-                case 0:
-                    //ani.SetBool("walk", false);
-                    break;
-                case 1:
-                    ;
-                    angulo = Quaternion.Euler(0, grado, 0);
-                    rutina++;
-                    break;
-                case 2:
-                    rb.transform.rotation = Quaternion.RotateTowards(transform.rotation, angulo, 0.5f);
-                    rb.transform.Translate(Vector3.forward * 5 * Time.deltaTime);
-
-                    ////ani.setBool("walk", true);
-                    //Vector3.MoveTowards = (rb,);
-                    // = Random.Range(0, 360)
-                    //new Vector3(x, y, z);
-                    break;
-
-            }
+            // agregar aca el movimeitno aleatorio del enemigo
+            GetRandomDestination();
         }
+        else
+        {
+            agent.destination = Player.position;
+        }
+    }
 
 
+    void GetRandomDestination()
+    {
+        // Obtener un punto aleatorio dentro del radio wanderRadius
+        Vector3 randomPoint = Random.insideUnitSphere * wanderRadius;
+        randomPoint += transform.position;
 
-
+        // Asegurar que el punto aleatorio esté en el NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, wanderRadius, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
     }
 }
