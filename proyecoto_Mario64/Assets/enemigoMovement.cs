@@ -53,7 +53,7 @@ public class enemigoMovement : MonoBehaviour
                     //Vector3.MoveTowards = (rb,);
                     // = Random.Range(0, 360)
                     //new Vector3(x, y, z);
-                    //break;
+                    break;
 
             }
         }
