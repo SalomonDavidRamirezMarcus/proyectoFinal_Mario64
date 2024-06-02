@@ -1,22 +1,15 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
-using Unity.AI.Navigation.Editor;
-using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
+
 
 public class enemigoMovimiento : MonoBehaviour
 {
-
-
-
-
     public Transform Player;
     private NavMeshAgent agent;
     public Animator ani;
+
+    public float crono;
 
     public GameObject target;
 
@@ -24,27 +17,28 @@ public class enemigoMovimiento : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.Find("mario");
+        target = GameObject.Find("Player");
         agent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-
     }
-
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(transform.position, target.transform.position) > 2.5)
+        crono += 1 * Time.deltaTime;
+
+        if (Vector3.Distance(transform.position, target.transform.position) > 100)
         {
-            // agregar aca el movimeitno aleatorio del enemigo
-            GetRandomDestination();
+            if (crono >=4) 
+            {
+                GetRandomDestination();
+                crono = 0;
+            }
         }
         else
         {
             agent.destination = Player.position;
         }
     }
-
-
     void GetRandomDestination()
     {
         // Obtener un punto aleatorio dentro del radio wanderRadius
