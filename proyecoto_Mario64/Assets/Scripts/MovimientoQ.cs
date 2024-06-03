@@ -5,19 +5,22 @@ using UnityEngine;
 public class MovimientoQ : MonoBehaviour
 {
     public float moveSpeed = 10f;
-    public float firstJumpForce = 10f;
-    public float secondJumpMultiplier = 1.5f;
-    public float thirdJumpMultiplier = 2f;
+    public float maxJumpHeight = 5f;
+    public float maxJumpTime = 0.5f;
+    public float rotationSpeed = 100f;
     private int jumpCount = 0;
     private bool canJump = true;
-    public float rotationSpeed = 100f;
     private Rigidbody rb;
 
     public Animator anima;
 
+    private Dictionary<int, float> initialJumpVelocities = new Dictionary<int, float>();
+    private Dictionary<int, float> jumpGravities = new Dictionary<int, float>();
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        SetupJumpVariables();
     }
 
     void Update()
@@ -27,7 +30,6 @@ public class MovimientoQ : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         // Rotar al personaje
-        Quaternion rotation = Quaternion.Euler(0f, horizontalInput * rotationSpeed * Time.deltaTime, 0f);
         transform.Rotate(0f, horizontalInput * rotationSpeed * Time.deltaTime, 0f);
 
         if (Input.GetButtonDown("Jump") && (canJump || jumpCount < 3))
@@ -64,25 +66,14 @@ public class MovimientoQ : MonoBehaviour
 
     private void PerformJump()
     {
-        float jumpForce = firstJumpForce;
-
-        if (jumpCount == 0)
-        {
-            //anima.SetTrigger("firstJump");
-        }
-        else if (jumpCount == 1)
-        {
-            jumpForce *= secondJumpMultiplier;
-            //anima.SetTrigger("secondJump");
-        }
-        else if (jumpCount == 2)
-        {
-            jumpForce *= thirdJumpMultiplier;
-            //anima.SetTrigger("thirdJump");
-        }
+        float jumpVelocity = initialJumpVelocities[jumpCount + 1];
+        float jumpGravity = jumpGravities[jumpCount + 1];
 
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset vertical velocity
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * jumpVelocity, ForceMode.VelocityChange);
+
+        Physics.gravity = new Vector3(0, jumpGravity, 0);
+
         jumpCount++;
 
         if (jumpCount >= 3)
@@ -96,8 +87,31 @@ public class MovimientoQ : MonoBehaviour
         if (collision.transform.tag == "Floor")
         {
             canJump = true;
-            Debug.Log("PUEDE SALTAR");
             jumpCount = 0; // Reset jump count when touching the ground
+            Physics.gravity = new Vector3(0, -9.81f, 0); // Reset gravity to default
         }
     }
+
+    private void SetupJumpVariables()
+    {
+        float timeToApex = maxJumpTime / 2;
+
+        float firstJumpGravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
+        float firstJumpVelocity = (2 * maxJumpHeight) / timeToApex;
+
+        float secondJumpGravity = (-2 * (maxJumpHeight + 2)) / Mathf.Pow(timeToApex, 2);
+        float secondJumpVelocity = (2 * (maxJumpHeight + 2)) / timeToApex;
+
+        float thirdJumpGravity = (-2 * (maxJumpHeight + 4)) / Mathf.Pow(timeToApex, 2);
+        float thirdJumpVelocity = (2 * (maxJumpHeight + 4)) / timeToApex;
+
+        initialJumpVelocities.Add(1, firstJumpVelocity);
+        initialJumpVelocities.Add(2, secondJumpVelocity);
+        initialJumpVelocities.Add(3, thirdJumpVelocity);
+
+        jumpGravities.Add(1, firstJumpGravity);
+        jumpGravities.Add(2, secondJumpGravity);
+        jumpGravities.Add(3, thirdJumpGravity);
+    }
 }
+
