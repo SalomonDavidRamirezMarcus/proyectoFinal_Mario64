@@ -17,6 +17,12 @@ public class MovimientoQ : MonoBehaviour
     private Dictionary<int, float> initialJumpVelocities = new Dictionary<int, float>();
     private Dictionary<int, float> jumpGravities = new Dictionary<int, float>();
 
+    // cuando golepa a un enemigo salta de nuevo y cuanto va a saltar
+    public bool Hit = false;
+    public float jumpForce = 100f;
+
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -47,6 +53,13 @@ public class MovimientoQ : MonoBehaviour
             anima.SetFloat("run", 0);
             Debug.Log("Quieto");
         }
+
+        // logica cuando le salta al enemigo
+        if (Hit)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            Hit = false;
+        }
     }
 
     void FixedUpdate()
@@ -70,11 +83,13 @@ public class MovimientoQ : MonoBehaviour
         float jumpGravity = jumpGravities[jumpCount + 1];
 
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset vertical velocity
+
         rb.AddForce(Vector3.up * jumpVelocity, ForceMode.VelocityChange);
 
         Physics.gravity = new Vector3(0, jumpGravity, 0);
 
         jumpCount++;
+
 
         if (jumpCount >= 3)
         {
