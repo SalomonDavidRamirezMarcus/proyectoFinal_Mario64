@@ -113,7 +113,7 @@ public class MovimientoQ : MonoBehaviour
         float timeToApex = maxJumpTime / 2;
 
         float firstJumpGravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
-        float firstJumpVelocity = (2 * maxJumpHeight) / (timeToApex * 1.25f);
+        float firstJumpVelocity = (2 * maxJumpHeight) / (timeToApex* 0.5f);
 
         float secondJumpGravity = (-2 * (maxJumpHeight + 2)) / Mathf.Pow(timeToApex, 2);
         float secondJumpVelocity = (2 * (maxJumpHeight + 2)) / timeToApex;

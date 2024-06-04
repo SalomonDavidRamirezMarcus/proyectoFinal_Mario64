@@ -11,7 +11,7 @@ public class HealthBarController : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        UpdateHealthBar();
+        cambiarImagen();
     }
 
     void Update()
@@ -42,5 +42,10 @@ public class HealthBarController : MonoBehaviour
     {
         int spriteIndex = Mathf.FloorToInt((currentHealth / maxHealth) * (healthSprites.Length - 1));
         healthImage.sprite = healthSprites[spriteIndex];
+    }
+
+    void cambiarImagen()
+    {
+        healthImage.sprite = healthSprites[1];
     }
 }
