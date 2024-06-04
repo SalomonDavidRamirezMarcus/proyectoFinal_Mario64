@@ -7,7 +7,6 @@ TagManager:
   - Floor
   - moneda
   - estrella
-  - Enemy
   layers:
   - Default
   - TransparentFX

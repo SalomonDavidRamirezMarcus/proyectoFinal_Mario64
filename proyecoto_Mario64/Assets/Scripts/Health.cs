@@ -5,12 +5,13 @@ public class HealthBarController : MonoBehaviour
 {
     public Image healthImage; // Asigna esta variable en el Inspector
     public Sprite[] healthSprites; // Asigna tus sprites en el Inspector
-    private int spriteIndex;
+    public float maxHealth = 100f;
+    public float currentHealth;
 
     void Start()
     {
-        spriteIndex = 0;
-        healthImage.sprite = healthSprites[spriteIndex]; // Inicializa con el primer sprite
+        currentHealth = maxHealth;
+        cambiarImagen();
     }
 
     void Update()
@@ -21,39 +22,30 @@ public class HealthBarController : MonoBehaviour
         // UpdateHealthBar();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void TakeDamage(float amount)
     {
-        if (collision.transform.CompareTag("Enemy"))
-        {
-            TakeDamage();
-        }
+        currentHealth -= amount;
+        if (currentHealth < 0)
+            currentHealth = 0;
+        UpdateHealthBar();
     }
 
-    private void TakeDamage()
+    public void Heal(float amount)
     {
-        if (spriteIndex < healthSprites.Length - 1) // Asegúrate de no exceder el tamaño del array
-        {
-            spriteIndex += 1;
-            healthImage.sprite = healthSprites[spriteIndex];
-            Debug.Log("DAÑO");
-        }
-        else
-        {
-            Debug.Log("No más vida");
-            // Aquí podrías implementar lógica adicional, como destruir al personaje, mostrar una pantalla de game over, etc.
-        }
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+        UpdateHealthBar();
     }
+
+    void UpdateHealthBar()
+    {
+        int spriteIndex = Mathf.FloorToInt((currentHealth / maxHealth) * (healthSprites.Length - 1));
+        healthImage.sprite = healthSprites[spriteIndex];
+    }
+
     void cambiarImagen()
     {
         healthImage.sprite = healthSprites[1];
     }
-
 }
-
-
-
-
-
-
-
-
