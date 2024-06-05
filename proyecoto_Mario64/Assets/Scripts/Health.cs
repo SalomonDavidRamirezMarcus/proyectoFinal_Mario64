@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class HealthBarController : MonoBehaviour
 {
@@ -70,9 +71,8 @@ public class HealthBarController : MonoBehaviour
             anima.SetBool("Death", true);
             Debug.Log("No más vida");
             PlaySound(deathSound); // Reproduce el sonido de muerte
-            // Aquí podrías implementar lógica adicional, como destruir al personaje, mostrar una pantalla de game over, etc.
-            // Por ejemplo:
-            // Destroy(gameObject);
+            // Iniciar la corrutina para cambiar de escena después de 4 segundos
+            StartCoroutine(LoadSceneAfterDelay(4.0f));
         }
     }
 
@@ -122,6 +122,12 @@ public class HealthBarController : MonoBehaviour
         healthImage.canvasRenderer.SetAlpha(0.0f);
     }
 
+    private IEnumerator LoadSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(2);
+    }
+
     private void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)
@@ -130,6 +136,7 @@ public class HealthBarController : MonoBehaviour
         }
     }
 }
+
 
 
 
