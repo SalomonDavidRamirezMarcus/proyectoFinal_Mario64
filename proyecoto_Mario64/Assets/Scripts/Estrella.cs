@@ -6,6 +6,7 @@ public class Estrella : MonoBehaviour
 {
     public AudioClip winSound; // Sonido de recolección de la estrella
     private AudioSource audioSource;
+    public Animator anima;
 
     private void Start()
     {
@@ -17,6 +18,7 @@ public class Estrella : MonoBehaviour
         if (other.CompareTag("Player")) // Asegúrate de que tu jugador tenga el tag "Player"
         {
             PlaySound(winSound); // Reproduce el sonido de recolección de la estrella
+            anima.SetBool("emote", true);
             Debug.Log("¡Has ganado el juego!");
             StartCoroutine(LoadVictoryScene()); // Iniciar la corrutina para cambiar de escena
         }
@@ -33,7 +35,7 @@ public class Estrella : MonoBehaviour
     private IEnumerator LoadVictoryScene()
     {
         // Espera un segundo para permitir que el sonido se reproduzca
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
         SceneManager.LoadScene("Victory"); // Cambia a la escena de victoria (asegúrate de que el nombre de la escena sea correcto)
     }
 }
