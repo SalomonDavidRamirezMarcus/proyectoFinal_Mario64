@@ -52,7 +52,7 @@ public class enemigoMovimiento : MonoBehaviour
         }
         else
         {
-            if(Vector3.Distance(transform.position, target.transform.position) > 10 && !atacando)
+            if(Vector3.Distance(transform.position, target.transform.position) > 5 && !atacando)
             {
                 ani.SetBool("ataque", false);
                 ani.SetBool("caminar", true);
