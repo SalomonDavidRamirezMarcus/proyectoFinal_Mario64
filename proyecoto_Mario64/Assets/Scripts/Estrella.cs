@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Star : MonoBehaviour
+public class Estrella : MonoBehaviour
 {
     public AudioClip winSound; // Sonido de recolección de la estrella
     private AudioSource audioSource;
@@ -15,11 +17,8 @@ public class Star : MonoBehaviour
         if (other.CompareTag("Player")) // Asegúrate de que tu jugador tenga el tag "Player"
         {
             PlaySound(winSound); // Reproduce el sonido de recolección de la estrella
-            // Aquí puedes agregar la lógica para ganar el juego
             Debug.Log("¡Has ganado el juego!");
-            // Puedes cargar una nueva escena, mostrar un mensaje de victoria, etc.
-            // Ejemplo:
-            // SceneManager.LoadScene("WinScene");
+            StartCoroutine(LoadVictoryScene()); // Iniciar la corrutina para cambiar de escena
         }
     }
 
@@ -30,4 +29,13 @@ public class Star : MonoBehaviour
             audioSource.PlayOneShot(clip);
         }
     }
+
+    private IEnumerator LoadVictoryScene()
+    {
+        // Espera un segundo para permitir que el sonido se reproduzca
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Victory"); // Cambia a la escena de victoria (asegúrate de que el nombre de la escena sea correcto)
+    }
 }
+
+
