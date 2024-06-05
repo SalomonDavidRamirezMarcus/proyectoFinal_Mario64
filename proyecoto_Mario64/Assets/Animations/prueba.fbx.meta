@@ -112,6 +112,9 @@ ModelImporter:
   referencedClips:
   - cf29c1582cfeb0f40b5dfbf0df4f84a9
   - bcc7ba9bce0f1624c894b95ad00c48da
+  - f5d5a27d398037f48a37321e641a6907
+  - b472bb90c4d10f044ab6bb1394b913c5
+  - 22fe5a3dec38b9d4e8a0a25362524b5b
   importAnimation: 1
   humanDescription:
     serializedVersion: 3

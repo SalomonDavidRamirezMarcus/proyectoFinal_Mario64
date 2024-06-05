@@ -8,24 +8,32 @@ public class MovimientoQ : MonoBehaviour
     public float maxJumpHeight = 5f;
     public float maxJumpTime = 0.5f;
     public float rotationSpeed = 100f;
+
+    private Rigidbody rb;
+    public Animator anima;
+
+    // Variables Triple Salto
     private int jumpCount = 0;
     private bool canJump = true;
-    private Rigidbody rb;
-
-    public Animator anima;
 
     private Dictionary<int, float> initialJumpVelocities = new Dictionary<int, float>();
     private Dictionary<int, float> jumpGravities = new Dictionary<int, float>();
 
-    // cuando golepa a un enemigo salta de nuevo y cuanto va a saltar
+    // Variables SaltoVSEnemigo
     public bool Hit = false;
     public float jumpForce = 100f;
 
+    // Variables para los sonidos de salto
+    public AudioClip jumpSound1;
+    public AudioClip jumpSound2;
+    public AudioClip jumpSound3;
 
+    private AudioSource audioSource;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
         SetupJumpVariables();
     }
 
@@ -55,11 +63,12 @@ public class MovimientoQ : MonoBehaviour
             Debug.Log("Quieto");
         }
 
-        // logica cuando le salta al enemigo
+        // lógica cuando le salta al enemigo
         if (Hit)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             Hit = false;
+            anima.SetBool("salto", true);
         }
     }
 
@@ -89,8 +98,9 @@ public class MovimientoQ : MonoBehaviour
 
         Physics.gravity = new Vector3(0, jumpGravity, 0);
 
-        jumpCount++;
+        PlayJumpSound(jumpCount + 1); // Reproduce el sonido correspondiente al salto
 
+        jumpCount++;
 
         if (jumpCount >= 3)
         {
@@ -130,6 +140,23 @@ public class MovimientoQ : MonoBehaviour
         jumpGravities.Add(2, secondJumpGravity);
         jumpGravities.Add(3, thirdJumpGravity);
     }
+
+    private void PlayJumpSound(int jumpNumber)
+    {
+        switch (jumpNumber)
+        {
+            case 1:
+                audioSource.PlayOneShot(jumpSound1);
+                break;
+            case 2:
+                audioSource.PlayOneShot(jumpSound2);
+                break;
+            case 3:
+                audioSource.PlayOneShot(jumpSound3);
+                break;
+        }
+    }
 }
+
 
 

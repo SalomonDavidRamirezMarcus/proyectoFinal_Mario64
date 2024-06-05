@@ -8,12 +8,20 @@ public class HealthBarController : MonoBehaviour
     public Sprite[] healthSprites; // Asigna tus sprites en el Inspector
     private int spriteIndex;
     private Coroutine fadeCoroutine;
+    public Animator anima;
+
+    // Variables de sonido
+    public AudioClip damageSound;
+    public AudioClip healSound;
+    public AudioClip deathSound;
+    private AudioSource audioSource;
 
     void Start()
     {
         spriteIndex = 0;
         healthImage.sprite = healthSprites[spriteIndex]; // Inicializa con el primer sprite
         healthImage.canvasRenderer.SetAlpha(0.0f); // Inicializa con la imagen invisible
+        audioSource = GetComponent<AudioSource>(); // Obtén el componente AudioSource
     }
 
     void Update()
@@ -42,7 +50,9 @@ public class HealthBarController : MonoBehaviour
         {
             spriteIndex += 1;
             healthImage.sprite = healthSprites[spriteIndex];
+
             Debug.Log("DAÑO");
+            PlaySound(damageSound); // Reproduce el sonido de daño
 
             // Si hay una corrutina de desvanecimiento corriendo, detenerla
             if (fadeCoroutine != null)
@@ -54,10 +64,15 @@ public class HealthBarController : MonoBehaviour
             healthImage.canvasRenderer.SetAlpha(1.0f);
             fadeCoroutine = StartCoroutine(FadeOutAfterDelay(4.0f));
         }
-        else
+
+        if (spriteIndex == 8) // Verifica si el índice es 8 para manejar la muerte del personaje
         {
+            anima.SetBool("Death", true);
             Debug.Log("No más vida");
+            PlaySound(deathSound); // Reproduce el sonido de muerte
             // Aquí podrías implementar lógica adicional, como destruir al personaje, mostrar una pantalla de game over, etc.
+            // Por ejemplo:
+            // Destroy(gameObject);
         }
     }
 
@@ -68,6 +83,7 @@ public class HealthBarController : MonoBehaviour
             spriteIndex -= 1;
             healthImage.sprite = healthSprites[spriteIndex];
             Debug.Log("CURACIÓN");
+            PlaySound(healSound); // Reproduce el sonido de curación
 
             // Si hay una corrutina de desvanecimiento corriendo, detenerla
             if (fadeCoroutine != null)
@@ -105,5 +121,15 @@ public class HealthBarController : MonoBehaviour
 
         healthImage.canvasRenderer.SetAlpha(0.0f);
     }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
 }
+
+
 
