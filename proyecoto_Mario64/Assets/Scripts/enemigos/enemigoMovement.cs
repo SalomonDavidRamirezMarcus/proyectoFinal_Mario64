@@ -14,7 +14,11 @@ public class enemigoMovimiento : MonoBehaviour
 
     private MovimientoQ mario;
 
-    
+    private bool atacando;
+
+
+
+
 
 
     public float wanderRadius = 10f;
@@ -26,32 +30,56 @@ public class enemigoMovimiento : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
         mario = FindObjectOfType<MovimientoQ>();
+    
     }
     // Update is called once per frame
     void Update()
     {
+        ani.SetBool("ataque", false);
+        ani.SetBool("caminar", false);
         //cronometro de movimiento
         crono += 1 * Time.deltaTime;
         //distancia para seguir enemigo
-        if (Vector3.Distance(transform.position, target.transform.position) > 100)
+        if (Vector3.Distance(transform.position, target.transform.position) > 80)
         {
-            if (crono >=4) 
+            if (crono >=6) 
             {
                 GetRandomDestination();
                 crono = 0;
+               new WaitForSeconds(3f);
+
             }
         }
         else
         {
-            //seguir enemigo 
-            agent.destination = Player.position;
+            if(Vector3.Distance(transform.position, target.transform.position) > 10 && !atacando)
+            {
+                ani.SetBool("ataque", false);
+                ani.SetBool("caminar", true);
+                //seguir enemigo 
+                agent.destination = Player.position;
+            }
+            else
+            {
+                ani.SetBool("caminar",false);
+                ani.SetBool("ataque", true);
+                atacando = true;
+
+                new WaitForSeconds(10f);
+
+                
+                atacando = false;
+            }
         }
     }
+
     void GetRandomDestination()
     {
         // Obtener un punto aleatorio dentro del radio wanderRadius
         Vector3 randomPoint = Random.insideUnitSphere * wanderRadius;
         randomPoint += transform.position;
+        ani.SetBool("ataque", false);
+        ani.SetBool("caminar", true);
 
         // Asegurar que el punto aleatorio esté en el NavMesh
         NavMeshHit hit;
@@ -67,6 +95,10 @@ public class enemigoMovimiento : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             mario.Hit = true;
+
+            ani.SetBool("muerte", true);
+            new WaitForSeconds(4f);
+
             Destroy(gameObject);
 
 
