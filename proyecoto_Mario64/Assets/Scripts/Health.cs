@@ -1,17 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class HealthBarController : MonoBehaviour
 {
     public Image healthImage; // Asigna esta variable en el Inspector
     public Sprite[] healthSprites; // Asigna tus sprites en el Inspector
-    public float maxHealth = 100f;
-    public float currentHealth;
+    private int spriteIndex;
+    private Coroutine fadeCoroutine;
 
     void Start()
     {
-        currentHealth = maxHealth;
-        cambiarImagen();
+        spriteIndex = 0;
+        healthImage.sprite = healthSprites[spriteIndex]; // Inicializa con el primer sprite
+        healthImage.canvasRenderer.SetAlpha(0.0f); // Inicializa con la imagen invisible
     }
 
     void Update()
@@ -22,30 +24,86 @@ public class HealthBarController : MonoBehaviour
         // UpdateHealthBar();
     }
 
-    public void TakeDamage(float amount)
+    private void OnCollisionEnter(Collision collision)
     {
-        currentHealth -= amount;
-        if (currentHealth < 0)
-            currentHealth = 0;
-        UpdateHealthBar();
+        if (collision.transform.CompareTag("Enemy"))
+        {
+            TakeDamage();
+        }
+        else if (collision.transform.CompareTag("Heal"))
+        {
+            HealDamage();
+        }
     }
 
-    public void Heal(float amount)
+    private void TakeDamage()
     {
-        currentHealth += amount;
-        if (currentHealth > maxHealth)
-            currentHealth = maxHealth;
-        UpdateHealthBar();
+        if (spriteIndex < healthSprites.Length - 1) // Asegúrate de no exceder el tamaño del array
+        {
+            spriteIndex += 1;
+            healthImage.sprite = healthSprites[spriteIndex];
+            Debug.Log("DAÑO");
+
+            // Si hay una corrutina de desvanecimiento corriendo, detenerla
+            if (fadeCoroutine != null)
+            {
+                StopCoroutine(fadeCoroutine);
+            }
+
+            // Mostrar la imagen y comenzar la corrutina para desvanecerla
+            healthImage.canvasRenderer.SetAlpha(1.0f);
+            fadeCoroutine = StartCoroutine(FadeOutAfterDelay(4.0f));
+        }
+        else
+        {
+            Debug.Log("No más vida");
+            // Aquí podrías implementar lógica adicional, como destruir al personaje, mostrar una pantalla de game over, etc.
+        }
     }
 
-    void UpdateHealthBar()
+    private void HealDamage()
     {
-        int spriteIndex = Mathf.FloorToInt((currentHealth / maxHealth) * (healthSprites.Length - 1));
-        healthImage.sprite = healthSprites[spriteIndex];
+        if (spriteIndex > 0) // Asegúrate de no exceder el tamaño del array
+        {
+            spriteIndex -= 1;
+            healthImage.sprite = healthSprites[spriteIndex];
+            Debug.Log("CURACIÓN");
+
+            // Si hay una corrutina de desvanecimiento corriendo, detenerla
+            if (fadeCoroutine != null)
+            {
+                StopCoroutine(fadeCoroutine);
+            }
+
+            // Mostrar la imagen y comenzar la corrutina para desvanecerla
+            healthImage.canvasRenderer.SetAlpha(1.0f);
+            fadeCoroutine = StartCoroutine(FadeOutAfterDelay(4.0f));
+        }
+        else
+        {
+            Debug.Log("Vida completa");
+            // Aquí podrías implementar lógica adicional, como evitar curar más allá de la vida máxima.
+        }
     }
 
-    void cambiarImagen()
+    private IEnumerator FadeOutAfterDelay(float delay)
     {
-        healthImage.sprite = healthSprites[1];
+        // Espera por el tiempo especificado
+        yield return new WaitForSeconds(delay);
+
+        // Desvanecer la imagen gradualmente
+        float fadeDuration = 1.0f; // Duración del desvanecimiento
+        float fadeSpeed = 1.0f / fadeDuration;
+        float progress = 0.0f;
+
+        while (progress < 1.0f)
+        {
+            progress += Time.deltaTime * fadeSpeed;
+            healthImage.canvasRenderer.SetAlpha(1.0f - progress);
+            yield return null;
+        }
+
+        healthImage.canvasRenderer.SetAlpha(0.0f);
     }
 }
+

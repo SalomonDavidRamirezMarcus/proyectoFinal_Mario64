@@ -17,17 +17,16 @@ public class MovimientoQ : MonoBehaviour
     private Dictionary<int, float> initialJumpVelocities = new Dictionary<int, float>();
     private Dictionary<int, float> jumpGravities = new Dictionary<int, float>();
 
-    // cuando golpea a un enemigo salta de nuevo y cuanto va a saltar
+    // cuando golepa a un enemigo salta de nuevo y cuanto va a saltar
     public bool Hit = false;
     public float jumpForce = 100f;
 
-    private float defaultGravity;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         SetupJumpVariables();
-        defaultGravity = Physics.gravity.y;
     }
 
     void Update()
@@ -42,6 +41,7 @@ public class MovimientoQ : MonoBehaviour
         if (Input.GetButtonDown("Jump") && (canJump || jumpCount < 3))
         {
             PerformJump();
+            anima.SetBool("salto", true);
         }
 
         if (verticalInput != 0)
@@ -55,7 +55,7 @@ public class MovimientoQ : MonoBehaviour
             Debug.Log("Quieto");
         }
 
-        // Lógica cuando golpea a un enemigo
+        // logica cuando le salta al enemigo
         if (Hit)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -74,7 +74,7 @@ public class MovimientoQ : MonoBehaviour
         // Aplicar gravedad extra si el personaje está cayendo
         if (rb.velocity.y < 0)
         {
-            rb.velocity += Vector3.up * defaultGravity * 2f * Time.fixedDeltaTime;
+            rb.velocity += Vector3.up * Physics.gravity.y * 2f * Time.fixedDeltaTime;
         }
     }
 
@@ -88,8 +88,9 @@ public class MovimientoQ : MonoBehaviour
         rb.AddForce(Vector3.up * jumpVelocity, ForceMode.VelocityChange);
 
         Physics.gravity = new Vector3(0, jumpGravity, 0);
-        anima.SetBool("salto", true);
+
         jumpCount++;
+
 
         if (jumpCount >= 3)
         {
@@ -103,7 +104,7 @@ public class MovimientoQ : MonoBehaviour
         {
             canJump = true;
             jumpCount = 0; // Reset jump count when touching the ground
-            Physics.gravity = new Vector3(0, defaultGravity, 0); // Reset gravity to default
+            Physics.gravity = new Vector3(0, -9.81f, 0); // Reset gravity to default
             anima.SetBool("salto", false);
         }
     }
@@ -113,7 +114,7 @@ public class MovimientoQ : MonoBehaviour
         float timeToApex = maxJumpTime / 2;
 
         float firstJumpGravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
-        float firstJumpVelocity = (2 * maxJumpHeight) / (timeToApex* 0.5f);
+        float firstJumpVelocity = (2 * maxJumpHeight) / (timeToApex * 0.6f);
 
         float secondJumpGravity = (-2 * (maxJumpHeight + 2)) / Mathf.Pow(timeToApex, 2);
         float secondJumpVelocity = (2 * (maxJumpHeight + 2)) / timeToApex;
